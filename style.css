@@ -426,10 +426,7 @@ h1 {
     font-size: 20px;
   }
 
-  .wheel {
-    width: 200px;
-    height: 200px;
-  }
+ 
 
   .wheel-pointer {
     top: calc(50% - 100px); /* Корректируем позицию стрелочки */
