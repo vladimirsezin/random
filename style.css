@@ -356,7 +356,7 @@ h1 {
     margin: 10px 0;
 }
 .next-btn {
-    margin-top: 100px;
+    padding-top: 100px;
 }
 /* Убедитесь, что wheel-section правильно центрирует колесо */
 .wheel-section {
