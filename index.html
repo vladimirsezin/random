@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Рандомайзер</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>COOL Random</h1>
+        </div>
+        
+        <!-- Контейнер для всех результатов -->
+        <div class="results-container">
+            <!-- Результат первого колеса изначально скрыт -->
+            <div class="result-container hidden" id="resultContainer1">
+                
+                <div class="result-display" id="result1">
+                    <div class="result-content">
+                        <img class="result-image hidden" id="resultImage1" alt="Результат">
+                        <span class="result-text"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Результат второго колеса изначально скрыт -->
+            <div class="result-container hidden" id="resultContainer2">
+                
+                <div class="result-display" id="result2">
+                    <div class="result-content">
+                        <span class="result-text"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Первое колесо со стрелочкой -->
+        <div class="wheel-container" id="wheelContainer1">
+            <div class="wheel-section" id="wheel1Section">
+                <div class="wheel" id="wheel1">
+                    <div class="wheel-sections"></div>
+                </div>
+            </div>
+            <!-- Стрелочка для первого колеса -->
+            <div class="wheel-pointer" id="pointer1"></div>
+        </div>
+        
+        <!-- Кнопки для первого этапа -->
+        <div class="first-stage-buttons">
+            <button class="spin-btn" id="spinBtn1">Фигура</button>
+            <div class="next-section hidden" id="nextSection">
+                <button class="next-btn" id="nextBtn">Загадать трюк</button>
+            </div>
+        </div>
+        
+        <!-- Второе колесо со своей стрелочкой -->
+        <div class="wheel-container hidden" id="wheelContainer2">
+            <div class="wheel-section">
+                <div class="wheel" id="wheel2">
+                    <div class="wheel-sections"></div>
+                </div>
+            </div>
+            <!-- Стрелочка для второго колеса -->
+            <div class="wheel-pointer" id="pointer2"></div>
+            <button class="spin-btn" id="spinBtn2">Трюк</button>
+        </div>
+    </div>
+    
+    <script src="random.js"></script>
+</body>
+</html>

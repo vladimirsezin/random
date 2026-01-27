@@ -1,0 +1,430 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #f7ef01 0%, #6b6e30 100%);
+    min-height: 100vh;
+    padding: 20px;
+    touch-action: manipulation;
+}
+
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Для позиционирования псевдоэлемента */
+    overflow: hidden; /* Чтобы размытие не выходило за границы */
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('jeka.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    
+    /* Размытие фона */
+    filter: blur(3px);
+    -webkit-filter: blur(3px); /* Для Safari */
+    
+    /* Затемнение (опционально) */
+    background-color: rgba(0, 0, 0, 0.2);
+    background-blend-mode: darken;
+    
+    z-index: 0; /* Под основным контентом */
+}
+
+/* Чтобы контент был поверх размытого фона */
+.container > * {
+    position: relative;
+    z-index: 1;
+}
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+}
+
+h1 {
+    color: #ffffff;
+    font-size: 38px;
+    font-weight: 600;
+    margin-top: 50px;
+}
+
+/* Контейнер для всех результатов */
+.results-container {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+   
+}
+
+
+
+.result-display {
+    padding: 20px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+/* Стиль для первого результата с картинкой */
+#result1.active {
+    min-height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.result-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 15px;
+}
+
+/* Конкретно для result2 контейнера */
+#result2 .result-text {
+    
+    color:#ffffff;
+}
+
+
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.result-text {
+    font-size: 34px;
+    font-weight: 700;
+    text-align: center;
+    color: #ffffff;
+}
+
+/* Для второго результата без картинки */
+#result2 .result-content {
+    min-height: 60px;
+    
+}
+
+/* Контейнер для колеса со стрелочкой */
+.wheel-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-grow: 1;
+    margin: 10px 0;
+}
+
+.wheel-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel {
+    width: 350px;
+    height: 350px;
+    max-width: 85vw;
+    max-height: 85vw;
+    border-radius: 50%;
+    border: 6px solid rgb(255, 238, 0);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 3s cubic-bezier(0.2, 0.8, 0.3, 1);
+    margin-bottom: 0; /* Убрали отступ снизу */
+    
+    /* Фоновая картинка колеса */
+    background-image: url('jeka.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.wheel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3); /* Затемнение 30% */
+    z-index: 1;
+    pointer-events: none; /* Чтобы не мешало кликам */
+}
+
+/* Чтобы текст был поверх затемнения */
+.wheel-sections {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Выше затемнения */
+}
+/* Стрелочка ВНЕ колеса */
+.wheel-pointer {
+    position: absolute;
+    top: calc(50% - 175px); /* Позиционируем над колесом */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 45px solid rgb(0, 0, 0);
+    z-index: 10; /* Выше колеса */
+    pointer-events: none; /* Не мешает кликам */
+    display:none;
+}
+
+.wheel-sections {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.wheel-section-item {
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    transform-origin: 100% 100%;
+    left: 0;
+    top: 0;
+    pointer-events: none; /* Чтобы не мешало кликам */
+}
+
+/* Текст как отдельный элемент */
+.sector-text {
+    position: absolute;
+    /* Позиция: немного от центра */
+    left: 35px; /* ПОДБИРАЙТЕ: 30, 35, 40 */
+    top: 50%;
+    
+    /* Стили текста */
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    
+    /* Вертикальный текст */
+    writing-mode: vertical-rl;
+    text-orientation: upright; /* Буквы вертикальные */
+    letter-spacing: 1px;
+    
+    /* Центрирование */
+    transform: translateY(-50%);
+    transform-origin: 0 50%;
+    white-space: nowrap;
+}
+
+
+
+
+/* Если слишком близко: */
+
+.spin-btn, .next-btn {
+    background: linear-gradient(135deg, #f7ef01 0%, #6b6e30 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 280px;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    margin-top: 30px;
+}
+
+.spin-btn:active, .next-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.spin-btn:disabled, .next-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.first-stage-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    flex-shrink: 0;
+}
+
+#spinBtn1 {
+    margin-top: 0;
+    
+}
+#spinBtn1 .spin-btn {
+    display:none;
+}
+.next-section {
+    text-align: center;
+    width: 100%;
+}
+
+.restart-section {
+    text-align: center;
+    margin: 30px 0 20px 0;
+    flex-shrink: 0;
+    margin-top: 0;
+}
+
+.restart-btn {
+    background: linear-gradient(135deg, #f7ef01 0%, #6b6e30 100%);
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    font-size: 24px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 280px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+   margin-top: 40px;
+}
+
+.restart-btn:active {
+    transform: scale(0.98);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.spinning {
+    pointer-events: none;
+}
+#wheelContainer1, #wheelContainer2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-grow: 1;
+    margin: 10px 0;
+}
+.next-btn {
+    margin-top: 100px;
+}
+/* Убедитесь, что wheel-section правильно центрирует колесо */
+.wheel-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+#pointer2 {
+    margin-top: -55px;
+    display: none;
+}/* Медиа-запросы для очень маленьких экранов */
+@media (max-height: 700px) {
+    .wheel {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .wheel-pointer {
+        top: calc(50% - 110px); /* Корректируем позицию стрелочки */
+    }
+    
+    .result-display {
+        min-height: 50px;
+        font-size: 18px;
+        padding: 12px;
+    }
+    
+    #result1.active {
+        min-height: 140px;
+    }
+    
+    .result-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .spin-btn, .next-btn {
+        padding: 14px 28px;
+        font-size: 16px;
+    }
+}
+
+@media (max-height: 600px) {
+    .container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 20px;
+    }
+    
+    .wheel {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .wheel-pointer {
+        top: calc(50% - 100px); /* Корректируем позицию стрелочки */
+    }
+    
+    #result1.active {
+        min-height: 120px;
+    }
+    
+    .result-image {
+        width: 70px;
+        height: 70px;
+    }
+}
