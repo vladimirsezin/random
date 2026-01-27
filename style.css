@@ -39,7 +39,7 @@ body {
     
     /* Размытие фона */
     filter: blur(3px);
-    -webkit-filter: blur(3px);
+    -webkit-filter: blur(10px);
     
     /* Затемнение */
     background-color: rgba(0, 0, 0, 0.2);
