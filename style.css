@@ -335,10 +335,7 @@ h1 {
 
 /* Медиа-запросы для очень маленьких экранов */
 @media (max-height: 700px) {
-    .wheel {
-        width: 220px;
-        height: 220px;
-    }
+  
     
     .wheel-pointer {
         top: calc(50% - 110px);
@@ -361,7 +358,7 @@ h1 {
     
     .spin-btn, .next-btn {
         padding: 14px 28px;
-        font-size: 16px;
+        font-size: 14px;
     }
 }
 
@@ -374,10 +371,7 @@ h1 {
         font-size: 20px;
     }
     
-    .wheel {
-        width: 200px;
-        height: 200px;
-    }
+   
     
     .wheel-pointer {
         top: calc(50% - 100px);
