@@ -50,7 +50,12 @@ body {
 
   z-index: 0; /* Под основным контентом */
 }
-
+.container::before img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Автоматически обрежет */
+  object-position: center;
+}
 /* Чтобы контент был поверх размытого фона */
 .container > * {
   position: relative;
