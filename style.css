@@ -386,10 +386,7 @@ h1 {
   button {
     font-size: 24px;
   }
-  .wheel {
-    width: 220px;
-    height: 220px;
-  }
+
 
   .wheel-pointer {
     top: calc(50% - 110px); /* Корректируем позицию стрелочки */
