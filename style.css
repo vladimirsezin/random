@@ -133,7 +133,7 @@ h1 {
 }
 
 .result-text {
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 700;
     text-align: center;
     color: #ffffff;
@@ -371,6 +371,8 @@ h1 {
     display: none;
 }/* Медиа-запросы для очень маленьких экранов */
 @media (max-height: 700px) {
+    button {
+        font-size:24px
     .wheel {
         width: 220px;
         height: 220px;
