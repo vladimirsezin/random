@@ -819,3 +819,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 window.resetGame = resetGame;
+// Блокировка скролла в Telegram Mini App
+function preventScroll(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+}
+
+// Блокируем все возможные события скролла
+document.addEventListener('touchmove', preventScroll, { passive: false });
+document.addEventListener('wheel', preventScroll, { passive: false });
+document.addEventListener('scroll', preventScroll, { passive: false });
