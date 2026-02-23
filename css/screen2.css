@@ -48,7 +48,6 @@
     font-size: 18px;
     font-weight: 500;
     transition: all 0.3s ease;
-    box-shadow: var(--button-shadow);
 }
 
 .player-input-field::placeholder {
@@ -58,16 +57,14 @@
 .player-input-field:hover {
     background: var(--button-bg);
     border-color: var(--accent);
-    box-shadow: var(--button-shadow-hover);
 }
 
 .player-input-field:focus {
     outline: none;
     border-color: rgb(102, 126, 234);
     background: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
 }
 
 .ready-btn {
-    margin: 20px auto 10px auto;
+    margin: auto auto 10px auto;
 }

@@ -61,10 +61,9 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--button-shadow);
 }
 
-.round-btn, 
+.round-btn,
 .player-count-btn {
     font-size: 22px;
     font-weight: 700;
@@ -77,7 +76,6 @@
 .player-count-btn.active {
     background: var(--accent);  /* Бордовый фон #722F37 */
     border-color: var(--button-border);
-    box-shadow: var(--button-shadow);
     color: white;
 }
 
@@ -87,7 +85,6 @@
 .round-btn:hover,
 .player-count-btn:hover {
     background: var(--button-bg);
-    box-shadow: var(--button-shadow-hover);
 }
 
 /* Активные кнопки при наведении - остаются бордовыми */
@@ -97,7 +94,6 @@
 .player-count-btn.active:hover {
     background: var(--accent);  /* Остается бордовым */
     border-color: var(--button-border);
-    box-shadow: var(--button-shadow-hover);
 }
 
 .difficulty-btn:active,
@@ -109,7 +105,7 @@
 
 /* ===== КНОПКА СТАРТ ===== */
 .screen-1.active .start-btn {
-    margin-top: 10px !important;
+    margin-top: auto !important;
     margin-bottom: 5px !important;
 }
 
@@ -143,7 +139,6 @@
     appearance: none;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: var(--button-shadow);
 }
 
 .settings-select option {
@@ -153,5 +148,4 @@
 
 .settings-select:hover {
     background: var(--button-bg);
-    box-shadow: var(--button-shadow-hover);
 }
