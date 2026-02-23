@@ -1,3 +1,21 @@
+// Инициализация Telegram Mini App
+if (window.Telegram && Telegram.WebApp) {
+    // Растягиваем на весь экран
+    Telegram.WebApp.expand();
+    
+    // Отключаем вертикальные свайпы
+    Telegram.WebApp.disableVerticalSwipes();
+    
+    // Устанавливаем цвет фона
+    Telegram.WebApp.setBackgroundColor('#000000');
+    Telegram.WebApp.setHeaderColor('#000000');
+    
+    // Говорим, что приложение готово
+    Telegram.WebApp.ready();
+    
+    // Блокируем скролл на уровне WebView
+    Telegram.WebApp.MainButton.hide(); // если не нужна кнопка
+}
 // ===== ЭКРАН 3: КОЛЕСО - ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ =====
 const wheel1_s3 = document.getElementById('wheel1_s3');
 const spinBtn1_s3 = document.getElementById('spinBtn1_s3');
