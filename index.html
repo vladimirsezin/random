@@ -3,72 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Рандомайзер</title>
-    <link rel="stylesheet" href="style.css">
+    <title>COOL Random</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Фоновая картинка с такими же свойствами как было в ::before -->
-        <img src="jeka.webp" alt="" class="background-img">
+    <!-- ===== ОБЩИЙ ХЕДЕР (ДЛЯ ВСЕХ ЭКРАНОВ) ===== -->
+    <div class="global-header">
+        <button class="back-btn hidden" id="backBtn" aria-label="Назад">Назад</button>
         
-        <div class="header">
-            <h1>COOL Random</h1>
+        <div class="header-icons">
+            <a href="https://www.youtube.com/@JekaCool" class="icon ">
+                <img src="images/jeka.webp" class="subscribe-img">
+            </a>
+            <a href="https://www.youtube.com/@vovchikchik" class="icon">
+                <img src="images/vchk.webp" class="subscribe-img">
+            </a>
+             <button id="homeBtn" class="icon home-btn hidden" aria-label="На главную">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L3 9L12 15L21 9L12 3Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3 9V19H21V9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 19V13H15V19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
         </div>
         
-        <!-- Контейнер для всех результатов -->
+       
+        
+        <a href="https://pay.cloudtips.ru/p/714a15d3" class="support-btn" target="_blank">Поддержать</a>
+    </div>
+
+    <!-- ===== ЭКРАН 1: НАСТРОЙКИ ===== -->
+    <div class="screen screen-1 active">
+        <div class="settings-container">
+            <div class="settings-group">
+                <label class="settings-label">Сложность</label>
+                <div class="difficulty-grid">
+                    <button class="difficulty-btn" data-difficulty="easy">Легкий</button>
+                    <button class="difficulty-btn" data-difficulty="medium">Средний</button>
+                    <button class="difficulty-btn" data-difficulty="hard">Сложный</button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <label class="settings-label">Фигуры</label>
+                <div class="figures-grid" id="figuresGrid">
+                    <!-- ИСПРАВЛЕНО: data-figure соответствуют тексту кнопки -->
+                    <button class="figure-btn" data-figure="Флэт">Флэт</button>
+                    <button class="figure-btn" data-figure="Рейл">Рейл</button>
+                    <button class="figure-btn" data-figure="Гробик">Гробик</button>
+                    <button class="figure-btn" data-figure="Кикер">Кикер</button>
+                    <button class="figure-btn" data-figure="Радиус">Радиус</button>
+                    <button class="figure-btn" data-figure="Дроп">Дроп</button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <label class="settings-label">До скольки играем</label>
+                <div class="rounds-grid">
+                    <button class="round-btn" data-rounds="5">5</button>
+                    <button class="round-btn" data-rounds="7">7</button>
+                    <button class="round-btn" data-rounds="10">10</button>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <label class="settings-label">Количество скейтеров</label>
+                <div class="players-grid">
+                    <button class="player-count-btn" data-count="1">1</button>
+                    <button class="player-count-btn" data-count="2">2</button>
+                    <button class="player-count-btn" data-count="3">3</button>
+                    <button class="player-count-btn" data-count="4">4</button>
+                </div>
+            </div>
+
+            <button class="start-btn" id="startGameBtn">Начать игру</button>
+        </div>
+    </div>
+
+    <!-- ===== ЭКРАН 2: ВВОД ИМЁН ===== -->
+    <div class="screen screen-2 hidden">
+        <h2 class="screen-title">Введите имена скейтеров</h2>
+
+        <div class="players-input-container">
+            <div class="players-input-list" id="playersInputList"></div>
+        </div>
+
+        <button class="ready-btn" id="readyBtn">Готово</button>
+    </div>
+
+    <!-- ===== ЭКРАН 3: КОЛЕСО ===== -->
+    <div class="screen screen-3 hidden">
+        <div style="text-align: center; margin-bottom: 10px;">
+            <span id="currentPlayerName">Александр</span>
+        </div>
+        
+        <!-- ДОБАВЛЕНО: контейнер для сообщения о победителе -->
+        <div id="winnerMessage" class="winner-message hidden"></div>
+        
+        <div class="fails-container" id="failsContainer">
+            <!-- Сюда будут динамически добавляться счетчики -->
+        </div>
+        
         <div class="results-container">
-            <!-- Результат первого колеса изначально скрыт -->
-            <div class="result-container hidden" id="resultContainer1">
-                <div class="result-display" id="result1">
+            <div class="result-container hidden" id="resultContainer1_s3">
+                <div class="result-display" id="result1_s3">
                     <div class="result-content">
-                        <img class="result-image hidden" id="resultImage1" alt="Результат">
-                        <span class="result-text"></span>
+                        <img class="result-image hidden" id="resultImage1_s3" alt="Результат">
+                        <span class="result-text" id="figureResult_s3"></span>
                     </div>
                 </div>
             </div>
             
-            <!-- Результат второго колеса изначально скрыт -->
-            <div class="result-container hidden" id="resultContainer2">
-                <div class="result-display" id="result2">
+            <div class="result-container hidden" id="resultContainer2_s3">
+                <div class="result-display" id="result2_s3">
                     <div class="result-content">
-                        <span class="result-text"></span>
+                        <span class="result-text" id="trickResult_s3"></span>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Первое колесо со стрелочкой -->
-        <div class="wheel-container" id="wheelContainer1">
-            <div class="wheel-section" id="wheel1Section">
-                <div class="wheel" id="wheel1">
+        <div class="wheel-container" id="wheelContainer1_s3">
+            <div class="wheel-section" id="wheel1Section_s3">
+                <div class="wheel" id="wheel1_s3">
                     <div class="wheel-sections"></div>
                 </div>
             </div>
-            <!-- Стрелочка для первого колеса -->
-            <div class="wheel-pointer" id="pointer1"></div>
         </div>
         
-        <!-- Кнопки для первого этапа -->
-        <div class="first-stage-buttons">
-            <button class="spin-btn" id="spinBtn1">Фигура</button>
-            <div class="next-section hidden" id="nextSection">
-                <button class="next-btn" id="nextBtn">Загадать трюк</button>
-            </div>
+        <div class="first-stage-buttons" id="firstStageButtons_s3">
+            <button class="spin-btn" id="spinBtn1_s3">Загадать</button>
         </div>
         
-        <!-- Второе колесо со своей стрелочкой -->
-        <div class="wheel-container hidden" id="wheelContainer2">
-            <div class="wheel-section">
-                <div class="wheel" id="wheel2">
-                    <div class="wheel-sections"></div>
-                </div>
-            </div>
-            <!-- Стрелочка для второго колеса -->
-            <div class="wheel-pointer" id="pointer2"></div>
-            <button class="spin-btn" id="spinBtn2">Трюк</button>
+        <div style="display: flex; gap: 10px; justify-content: center; width: 100%; margin-top: 15px; margin-bottom: 10px;">
+            <button class="action-btn done-btn" id="doneBtn_s3">Сделал</button>
+            <button class="action-btn fail-btn" id="failBtn_s3">Не сделал</button>
+        </div>
+        
+        <div class="restart-section hidden" id="restartSection_s3">
+            <button class="restart-btn" id="restartBtn_s3">Перезаказ</button>
         </div>
     </div>
+
+    <!-- ===== ЭКРАН 4: УДАЛЕН (НЕ ИСПОЛЬЗУЕТСЯ) ===== -->
+
+    <script src="js/script.js"></script>
     
-    <script src="random.js"></script>
 </body>
 </html>

@@ -1,0 +1,73 @@
+/* ===== ЭКРАН 2: ВВОД ИМЁН ===== */
+.screen-title {
+    color: white;
+    font-size: clamp(24px, 7vw, 32px);
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin: 10px 0 25px 0;
+}
+
+.players-input-container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.players-input-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.player-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.player-input-label {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    margin-left: 5px;
+}
+
+.player-input-field {
+    width: 100%;
+    padding: 16px 24px;
+    background: var(--button-bg);
+    backdrop-filter: blur(5px);
+    border: 2px solid var(--button-border);
+    border-radius: 50px;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: var(--button-shadow);
+}
+
+.player-input-field::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.player-input-field:hover {
+    background: var(--button-bg);
+    border-color: var(--accent);
+    box-shadow: var(--button-shadow-hover);
+}
+
+.player-input-field:focus {
+    outline: none;
+    border-color: rgb(102, 126, 234);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+}
+
+.ready-btn {
+    margin: 20px auto 10px auto;
+}

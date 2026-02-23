@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --bg-dark: rgba(0, 0, 0, 0.7);
+    --bg-darker: rgba(0, 0, 0, 0.8);
+    --accent: #722F37;
+    --accent-hover: #8B0000;
+    --button-bg: rgba(255, 255, 255, 0.12);
+    --button-border: rgba(255, 255, 255, 0.25);
+    --button-shadow: 0 4px 20px rgba(114, 47, 55, 0.4);
+    --button-shadow-hover: 0 8px 30px rgba(139, 0, 0, 0.5);
+    --danger: #ff4444;
+    --danger-hover: #cc0000;
+    --text: white;
+    --text-secondary: #ddd;
+    --border-radius: 12px;
+    --spacing: 20px;
+    --header-height: 80px;
+    --max-width: 500px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-image: url('../images/bg.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    padding: 0 20px;
+    padding-top: calc(20px + env(safe-area-inset-top));
+    padding-bottom: env(safe-area-inset-bottom);
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+}
+
+/* ===== ЭКРАНЫ ===== */
+.screen {
+    display: none !important;
+    max-width: var(--max-width);
+    width: 100%;
+    margin: var(--header-height) auto 0 auto;
+    padding: 20px;
+    height: calc(100vh - var(--header-height));
+    max-height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-y: hidden !important;
+}
+
+.screen.active {
+    display: flex !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.result-card {
+    animation: fadeIn 0.3s ease;
+}
+
+.spinning {
+    pointer-events: none;
+}
