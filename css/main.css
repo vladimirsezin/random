@@ -57,8 +57,8 @@ body {
     height: 100vh;
     flex-direction: column;
     position: relative;
-  
-    
+    overflow-y: auto; /* РАЗРЕШАЕМ СКРОЛЛ ГДЕ НУЖНО */
+    -webkit-overflow-scrolling: touch; /* ПЛАВНЫЙ СКРОЛЛ ДЛЯ iOS */
 }
 
 .screen.active {
@@ -68,6 +68,9 @@ body {
 .hidden {
     display: none !important;
 }
+
+/* Контейнеры с прокруткой */
+
 
 /* ===== АНИМАЦИИ ===== */
 @keyframes fadeIn {
@@ -82,5 +85,22 @@ body {
 .spinning {
     pointer-events: none;
 }
+/* Фикс для iOS, чтобы при фокусе не съезжала верстка */
+input, textarea {
+    font-size: 16px !important; /* Предотвращает автоматический зум на iOS */
+    -webkit-user-select: text;
+    user-select: text;
+}
 
+/* Контейнер с полями ввода */
+.players-input-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+    max-height: calc(100vh - 200px);
+}
+
+/* Анимация для плавного закрытия */
+body.keyboard-closing {
+    transition: height 0.2s ease;
+}
 /* Убираем все дубли и !important где не нужно */
