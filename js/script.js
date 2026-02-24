@@ -16,6 +16,127 @@ if (window.Telegram && Telegram.WebApp) {
     // Блокируем скролл на уровне WebView
     Telegram.WebApp.MainButton.hide(); // если не нужна кнопка
 }
+// ===== ФИКС КЛАВИАТУРЫ ДЛЯ iOS =====
+(function() {
+    const tg = window.Telegram?.WebApp;
+    
+    if (!tg) return;
+    
+    // Функция принудительного сброса высоты
+    function forceResetHeight() {
+        // Возвращаем нормальную высоту
+        document.body.style.height = '100vh';
+        document.documentElement.style.height = '100vh';
+        
+        // Скроллим вверх
+        window.scrollTo(0, 0);
+        
+        // Через небольшой таймаут применяем высоту от Telegram
+        setTimeout(() => {
+            if (tg.viewportStableHeight) {
+                document.body.style.height = tg.viewportStableHeight + 'px';
+            }
+        }, 50);
+    }
+    
+    // Отслеживаем фокус на полях ввода
+    const inputs = document.querySelectorAll('input, textarea');
+    
+    inputs.forEach(input => {
+        // Когда поле получает фокус - запоминаем
+        input.addEventListener('focus', function() {
+            this.setAttribute('data-focused', 'true');
+            
+            // Даем время клавиатуре открыться
+            setTimeout(() => {
+                // Скроллим к полю ввода
+                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        });
+        
+        // Когда поле теряет фокус - принудительно сворачиваем клавиатуру
+        input.addEventListener('blur', function() {
+            this.removeAttribute('data-focused');
+            
+            // Пробуем разные способы свернуть клавиатуру
+            this.blur(); // Убираем фокус
+            
+            // Принудительно убираем активный элемент
+            if (document.activeElement && document.activeElement.tagName === 'INPUT') {
+                document.activeElement.blur();
+            }
+            
+            // Сбрасываем высоту
+            forceResetHeight();
+            
+            // Дополнительный фикс для Telegram
+            if (tg.expand) {
+                tg.expand(); // Разворачиваем обратно
+            }
+        });
+    });
+    
+    // Слушаем изменения размера окна (клавиатура меняет размер)
+    if (window.visualViewport) {
+        let lastHeight = window.visualViewport.height;
+        
+        window.visualViewport.addEventListener('resize', function() {
+            const newHeight = window.visualViewport.height;
+            const heightDiff = Math.abs(newHeight - lastHeight);
+            
+            // Если высота увеличилась (клавиатура закрылась)
+            if (newHeight > lastHeight && heightDiff > 100) {
+                // Убираем фокус со всех полей
+                if (document.activeElement && 
+                    (document.activeElement.tagName === 'INPUT' || 
+                     document.activeElement.tagName === 'TEXTAREA')) {
+                    document.activeElement.blur();
+                }
+                
+                // Восстанавливаем высоту
+                setTimeout(() => {
+                    document.body.style.height = '100vh';
+                    window.scrollTo(0, 0);
+                    
+                    if (tg.expand) tg.expand();
+                }, 100);
+            }
+            
+            lastHeight = newHeight;
+        });
+    }
+    
+    // Обработка касания вне поля ввода
+    document.addEventListener('touchstart', function(e) {
+        // Если кликнули не на input и не на textarea
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            // Проверяем, есть ли активное поле ввода
+            const activeInput = document.querySelector('input:focus, textarea:focus');
+            if (activeInput) {
+                activeInput.blur(); // Убираем фокус
+                
+                // Принудительно скрываем клавиатуру
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                    if (tg.expand) tg.expand();
+                }, 50);
+            }
+        }
+    });
+    
+    // Фикс для кнопки "Готово" (Return/Done)
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === 'Done' || e.keyCode === 13) {
+            const activeInput = document.querySelector('input:focus, textarea:focus');
+            if (activeInput) {
+                setTimeout(() => {
+                    activeInput.blur();
+                    forceResetHeight();
+                }, 100);
+            }
+        }
+    });
+})();
 // ===== ЭКРАН 3: КОЛЕСО - ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ =====
 const wheel1_s3 = document.getElementById('wheel1_s3');
 const spinBtn1_s3 = document.getElementById('spinBtn1_s3');
