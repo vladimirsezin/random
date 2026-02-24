@@ -137,6 +137,34 @@ if (window.Telegram && Telegram.WebApp) {
         }
     });
 })();
+// Принудительно убираем скролл на первом экране
+document.addEventListener('DOMContentLoaded', function() {
+    // Блокируем любые попытки скролла на первом экране
+    const screen1 = document.querySelector('.screen-1');
+    if (screen1) {
+        screen1.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+    }
+    
+    // Адаптация под разные экраны
+    function adjustForScreen() {
+        const groups = document.querySelectorAll('.settings-group');
+        const totalHeight = Array.from(groups).reduce((sum, group) => sum + group.offsetHeight, 0);
+        const startBtn = document.querySelector('.start-btn');
+        const screenHeight = window.innerHeight - 90; // 70px header + 20px padding
+        
+        // Если контент не помещается - уменьшаем отступы
+        if (totalHeight + 60 > screenHeight) {
+            groups.forEach(group => {
+                group.style.padding = '10px';
+                group.style.marginBottom = '10px';
+            });
+        }
+    }
+    
+    setTimeout(adjustForScreen, 100);
+});
 // ===== ЭКРАН 3: КОЛЕСО - ОБЪЯВЛЕНИЕ ПЕРЕМЕННЫХ =====
 const wheel1_s3 = document.getElementById('wheel1_s3');
 const spinBtn1_s3 = document.getElementById('spinBtn1_s3');

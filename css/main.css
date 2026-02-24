@@ -20,16 +20,17 @@
     --text-secondary: #ddd;
     --border-radius: 12px;
     --spacing: 20px;
-    --header-height: 80px;
+    --header-height: 70px;
     --max-width: 500px;
 }
 
-/* HTML и BODY - УПРОЩАЕМ */
 html, body {
     height: 100%;
     width: 100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    position: fixed;
 }
 
 body {
@@ -39,68 +40,155 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     color: var(--text);
-    /* Убираем overflow и fixed */
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    padding-top: calc(20px + env(safe-area-inset-top));
-    padding-bottom: env(safe-area-inset-bottom);
+    overflow: hidden;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
-/* ===== ЭКРАНЫ - ИСПРАВЛЕНО ===== */
+/* Хедер фиксированный */
+.global-header {
+    height: var(--header-height);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+/* ===== ЭКРАНЫ - БЕЗ СКРОЛЛА ===== */
 .screen {
     display: none;
-    max-width: var(--max-width);
-    width: 100%;
-    margin: var(--header-height) auto 0 auto;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
     padding: 20px;
-    height: 100vh;
-    flex-direction: column;
-    position: relative;
-    overflow-y: auto; /* РАЗРЕШАЕМ СКРОЛЛ ГДЕ НУЖНО */
-    -webkit-overflow-scrolling: touch; /* ПЛАВНЫЙ СКРОЛЛ ДЛЯ iOS */
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
 }
 
 .screen.active {
-    display: flex !important;
+    display: block;
 }
 
+/* Контейнер настроек - вся высота экрана */
+.settings-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: visible;
+}
+
+/* Группы настроек */
+.settings-group {
+    margin-bottom: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    border-radius: var(--border-radius);
+    padding: 15px;
+}
+
+.settings-label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* СЕТКИ - фиксированная высота */
+.difficulty-grid,
+.figures-grid,
+.rounds-grid,
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.players-grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* КНОПКИ - единообразные */
+.difficulty-btn,
+.figure-btn,
+.round-btn,
+.player-count-btn {
+    background: var(--button-bg);
+    border: 1px solid var(--button-border);
+    border-radius: 10px;
+    padding: 12px 5px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    backdrop-filter: blur(5px);
+}
+
+.player-count-btn {
+    background: var(--accent);
+    border: none;
+}
+
+.difficulty-btn.active,
+.figure-btn.active,
+.round-btn.active,
+.player-count-btn.active {
+    background: var(--accent-hover);
+    transform: scale(0.98);
+}
+
+/* Кнопка старта - внизу */
+.start-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    margin-top: auto;
+    box-shadow: var(--button-shadow);
+}
+
+.start-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Скрытые элементы */
 .hidden {
     display: none !important;
 }
 
-/* Контейнеры с прокруткой */
-
-
-/* ===== АНИМАЦИИ ===== */
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.8); }
-    to { opacity: 1; transform: scale(1); }
+/* Фикс для скролла - ПОЛНОСТЬЮ ОТКЛЮЧАЕМ */
+::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
 }
 
-.result-card {
-    animation: fadeIn 0.3s ease;
+* {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-.spinning {
-    pointer-events: none;
-}
-/* Фикс для iOS, чтобы при фокусе не съезжала верстка */
-input, textarea {
-    font-size: 16px !important; /* Предотвращает автоматический зум на iOS */
-    -webkit-user-select: text;
-    user-select: text;
+/* Фикс для первого экрана - гарантия без скролла */
+.screen-1 {
+    overflow: hidden !important;
 }
 
-/* Контейнер с полями ввода */
-.players-input-container {
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
-    max-height: calc(100vh - 200px);
+.screen-1 .settings-container {
+    overflow: visible !important;
 }
-
-/* Анимация для плавного закрытия */
-body.keyboard-closing {
-    transition: height 0.2s ease;
-}
-/* Убираем все дубли и !important где не нужно */
