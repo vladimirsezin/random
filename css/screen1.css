@@ -12,10 +12,10 @@
 .settings-container {
     display: flex;
     flex-direction: column;
-    gap: 30px !important;
+    gap: 30px;
     flex: 1 1 auto;
     justify-content: center;
-    padding: 0 0 5px 0 !important;
+    padding: 0 0 5px 0 ;
 }
 
 .settings-group {
@@ -148,4 +148,21 @@
 
 .settings-select:hover {
     background: var(--button-bg);
+}
+@media (max-height: 520px) {
+    .settings-group {
+        transform: scale(0.85);
+        margin: -8px 0;
+    }
+    .settings-container {
+        gap: 15px;
+    }
+    .global-header {
+        transform: scale(0.8);
+        transform-origin: top;
+    }
+    
+    .screen-1 {
+        padding: 5px;
+    }
 }
