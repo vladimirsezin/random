@@ -57,8 +57,8 @@ body {
     height: 100vh;
     flex-direction: column;
     position: relative;
-    overflow-y: auto; /* РАЗРЕШАЕМ СКРОЛЛ ГДЕ НУЖНО */
-    -webkit-overflow-scrolling: touch; /* ПЛАВНЫЙ СКРОЛЛ ДЛЯ iOS */
+  
+    
 }
 
 .screen.active {
