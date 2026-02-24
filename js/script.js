@@ -280,10 +280,16 @@ const figureToTrickMap = {
 
 // ===== ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ =====
 function showScreen(screenNumber) {
+    // Сначала скрываем все экраны
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.remove('active');
+        screen.classList.add('hidden'); // Добавляем hidden всем
     });
-    document.querySelector(`.screen-${screenNumber}`).classList.add('active');
+    
+    // Показываем нужный экран
+    const targetScreen = document.querySelector(`.screen-${screenNumber}`);
+    targetScreen.classList.remove('hidden'); // Убираем hidden
+    targetScreen.classList.add('active'); // Добавляем active
     
     // Управление видимостью кнопки "Назад"
     if (screenNumber === 2) {
@@ -295,12 +301,7 @@ function showScreen(screenNumber) {
     // Управление видимостью кнопки "Домой" в хедере
     const homeBtn = document.getElementById('homeBtn');
     if (homeBtn) {
-        // Показываем на экранах 3 и выше, скрываем на 1 и 2
-        if (screenNumber >= 3) {
-            homeBtn.classList.remove('hidden');
-        } else {
-            homeBtn.classList.add('hidden');
-        }
+        homeBtn.classList.toggle('hidden', screenNumber < 3);
     }
 }
 
