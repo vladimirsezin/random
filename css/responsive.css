@@ -54,7 +54,7 @@
     }
     
     .spin-btn, .action-btn, .restart-btn, .start-btn, .ready-btn {
-        padding: 14px 28px;
+        padding: 10px 28px;
         font-size: 22px;
         max-width: 260px;
     }

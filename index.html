@@ -87,71 +87,81 @@
             <button class="start-btn" id="startGameBtn">Начать игру</button>
         </div>
     </div>
-
-    <!-- ===== ЭКРАН 2: ВВОД ИМЁН ===== -->
-    <div class="screen screen-2 hidden">
-        <h2 class="screen-title">Введите имена скейтеров</h2>
-
-        <div class="players-input-container">
-            <div class="players-input-list" id="playersInputList"></div>
-        </div>
-
-        <button class="ready-btn" id="readyBtn">Готово</button>
+<div class="screen screen-2 hidden">
+    <h2 class="screen-title" id="playerInputTitle">Скейтер 1</h2>
+    
+    
+    <div class="players-input-container">
+        <input type="text" 
+               class="player-input-field" 
+               id="currentPlayerInput" 
+               placeholder="Введите имя" 
+               autocomplete="off"
+               autofocus>
     </div>
-
+    
+    <div class="step-indicator" id="stepIndicator">
+        <span class="step" data-step="1">1</span>
+        <span class="step" data-step="2">2</span>
+        <span class="step" data-step="3">3</span>
+        <span class="step" data-step="4">4</span>
+    </div>
+    
+    <button class="ready-btn" id="nextPlayerBtn">Далее</button>
+</div>
     <!-- ===== ЭКРАН 3: КОЛЕСО ===== -->
-    <div class="screen screen-3 hidden">
-        <div style="text-align: center; margin-bottom: 10px;">
-            <span id="currentPlayerName">Александр</span>
-        </div>
-        
-        <!-- ДОБАВЛЕНО: контейнер для сообщения о победителе -->
-        <div id="winnerMessage" class="winner-message hidden"></div>
-        
-        <div class="fails-container" id="failsContainer">
-            <!-- Сюда будут динамически добавляться счетчики -->
-        </div>
-        
-        <div class="results-container">
-            <div class="result-container hidden" id="resultContainer1_s3">
-                <div class="result-display" id="result1_s3">
-                    <div class="result-content">
-                        <img class="result-image hidden" id="resultImage1_s3" alt="Результат">
-                        <span class="result-text" id="figureResult_s3"></span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="result-container hidden" id="resultContainer2_s3">
-                <div class="result-display" id="result2_s3">
-                    <div class="result-content">
-                        <span class="result-text" id="trickResult_s3"></span>
-                    </div>
+<div class="screen screen-3 hidden">
+    <div style="text-align: center; margin-bottom: 10px;">
+        <span id="currentPlayerName">Александр</span>
+    </div>
+    
+    <!-- ДОБАВЛЕНО: контейнер для сообщения о победителе -->
+    <div id="winnerMessage" class="winner-message hidden"></div>
+    
+    <div class="fails-container" id="failsContainer">
+        <!-- Сюда будут динамически добавляться счетчики -->
+    </div>
+    
+    <div class="results-container">
+        <div class="result-container hidden" id="resultContainer1_s3">
+            <div class="result-display" id="result1_s3">
+                <div class="result-content">
+                    <span class="result-text" id="figureResult_s3"></span>
                 </div>
             </div>
         </div>
         
-        <div class="wheel-container" id="wheelContainer1_s3">
-            <div class="wheel-section" id="wheel1Section_s3">
-                <div class="wheel" id="wheel1_s3">
-                    <div class="wheel-sections"></div>
+        <div class="result-container hidden" id="resultContainer2_s3">
+            <div class="result-display" id="result2_s3">
+                <div class="result-content">
+                    <span class="result-text" id="trickResult_s3"></span>
                 </div>
             </div>
-        </div>
-        
-        <div class="first-stage-buttons" id="firstStageButtons_s3">
-            <button class="spin-btn" id="spinBtn1_s3">Загадать</button>
-        </div>
-        
-        <div style="display: flex; gap: 10px; justify-content: center; width: 100%; margin-top: 15px; margin-bottom: 10px;">
-            <button class="action-btn done-btn" id="doneBtn_s3">Сделал</button>
-            <button class="action-btn fail-btn" id="failBtn_s3">Не сделал</button>
-        </div>
-        
-        <div class="restart-section hidden" id="restartSection_s3">
-            <button class="restart-btn" id="restartBtn_s3">Перезаказ</button>
         </div>
     </div>
+    
+    <!-- КОЛЕСО ПО УМОЛЧАНИЮ СКРЫТО -->
+    <div class="wheel-container hidden" id="wheelContainer1_s3">
+        <div class="wheel-section" id="wheel1Section_s3">
+            <div class="wheel" id="wheel1_s3">
+                <div class="wheel-sections"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="first-stage-buttons" id="firstStageButtons_s3">
+        <button class="spin-btn" id="spinBtn1_s3">Загадать</button>
+    </div>
+    
+    <div style="display: flex; gap: 10px; justify-content: center; width: 100%; margin-top: 15px; margin-bottom: 10px;">
+        <button class="action-btn done-btn hidden" id="doneBtn_s3">Сделал</button>
+        <button class="action-btn fail-btn hidden" id="failBtn_s3">Не сделал</button>
+    </div>
+    
+    <div class="restart-section hidden" id="restartSection_s3">
+        <button class="restart-btn" id="restartBtn_s3">Перезаказ</button>
+    </div>
+</div>
 
     <!-- ===== ЭКРАН 4: УДАЛЕН (НЕ ИСПОЛЬЗУЕТСЯ) ===== -->
 

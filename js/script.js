@@ -183,7 +183,7 @@ let currentTrick_s3 = null;
 
 // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
 let gameState = {
-    difficulty: 'easy',
+    difficulties: ['easy'], // ИЗМЕНЕНО: теперь массив, по умолчанию легкие
     players: [],
     currentPlayerIndex: 0,
     selectedCount: 1,
@@ -198,77 +198,97 @@ let playerFails = [];
 let gameWinner = null;
 
 // ===== СПИСКИ ТРЮКОВ ДЛЯ РАЗНЫХ ФИГУР =====
-const tricksByFigure = {
-    'Флэт': [
-        'Frontside Flip', 'Backside Flip', 'Frontside Heelflip', 'Backside Heelflip',
-        'Impossible', 'Varial Kickflip', 'Varial Heelflip', 'Inward Heelflip',
-        'Hardflip', '360 Flip', '360 Shove-it', 'Frontside 360 Shove-it',
-        'Backside 360 Shove-it', 'Frontside Bigspin', 'Backside Bigspin',
-        'Frontside Bigspin Flip', 'Backside Bigspin Flip',
-        'Fakie Frontside Flip', 'Fakie Backside Flip', 'Fakie Frontside Heelflip',
-        'Fakie Backside Heelflip', 'Fakie Impossible', 'Fakie Varial Kickflip',
-        'Fakie Varial Heelflip', 'Fakie Inward Heelflip', 'Fakie Hardflip',
-        'Fakie 360 Flip', 'Fakie 360 Shove-it', 'Fakie Frontside 360 Shove-it',
-        'Fakie Backside 360 Shove-it', 'Fakie Frontside Bigspin',
-        'Fakie Backside Bigspin', 'Fakie Frontside Bigspin Flip',
-        'Fakie Backside Bigspin Flip',
-        'Nollie Frontside Flip', 'Nollie Backside Flip', 'Nollie Frontside Heelflip',
-        'Nollie Backside Heelflip', 'Nollie Impossible', 'Nollie Varial Kickflip',
-        'Nollie Varial Heelflip', 'Nollie Inward Heelflip', 'Nollie Hardflip',
-        'Nollie 360 Flip', 'Nollie 360 Shove-it', 'Nollie Frontside 360 Shove-it',
-        'Nollie Backside 360 Shove-it', 'Nollie Frontside Bigspin',
-        'Nollie Backside Bigspin', 'Nollie Frontside Bigspin Flip',
-        'Nollie Backside Bigspin Flip',
-        'Switch Frontside Flip', 'Switch Backside Flip', 'Switch Frontside Heelflip',
-        'Switch Backside Heelflip', 'Switch Impossible', 'Switch Varial Kickflip',
-        'Switch Varial Heelflip', 'Switch Inward Heelflip', 'Switch Hardflip',
-        'Switch 360 Flip', 'Switch 360 Shove-it', 'Switch Frontside 360 Shove-it',
-        'Switch Backside 360 Shove-it', 'Switch Frontside Bigspin',
-        'Switch Backside Bigspin', 'Switch Frontside Bigspin Flip',
-        'Switch Backside Bigspin Flip'
-    ],
-    'Гробик': [
-        'Frontside 50-50', 'Backside 50-50', 'Frontside Boardslide',
-        'Backside Boardslide', 'Frontside Lipslide', 'Backside Lipslide',
-        'Frontside Noseslide', 'Backside Noseslide', 'Frontside Tailslide',
-        'Backside Tailslide', 'Frontside Smith', 'Backside Smith',
-        'Frontside Feeble', 'Backside Feeble', 'Frontside Crooked',
-        'Backside Crooked', 'Frontside Overcrook', 'Backside Overcrook',
-        'Fakie Frontside 50-50', 'Fakie Backside 50-50',
-        'Fakie Frontside Boardslide', 'Fakie Backside Boardslide',
-        'Fakie Frontside Lipslide', 'Fakie Backside Lipslide',
-        'Fakie Frontside Noseslide', 'Fakie Backside Noseslide',
-        'Fakie Frontside Tailslide', 'Fakie Backside Tailslide',
-        'Fakie Frontside Smith', 'Fakie Backside Smith',
-        'Fakie Frontside Feeble', 'Fakie Backside Feeble',
-        'Nollie Frontside 50-50', 'Nollie Backside 50-50',
-        'Nollie Frontside Noseslide', 'Nollie Backside Noseslide',
-        'Nollie Frontside Tailslide', 'Nollie Backside Tailslide',
-        'Nollie Frontside Boardslide', 'Nollie Backside Boardslide',
-        'Nollie Frontside 5-0', 'Nollie Backside 5-0',
-        'Nollie Frontside Nose Grind', 'Nollie Backside Nose Grind',
-        'Switch Frontside 50-50', 'Switch Backside 50-50',
-        'Switch Frontside Boardslide', 'Switch Backside Boardslide',
-        'Switch Frontside Lipslide', 'Switch Backside Lipslide',
-        'Switch Frontside Noseslide', 'Switch Backside Noseslide',
-        'Switch Frontside Tailslide', 'Switch Backside Tailslide',
-        'Switch Frontside Smith', 'Switch Backside Smith',
-        'Switch Frontside Crooked', 'Switch Backside Crooked'
-    ],
-    'Радиус': [
-        'Frontside Axle', 'Backside Axle', 'Frontside Nose', 'Backside Nose',
-        'Frontside Tail', 'Backside Tail', 'Frontside Blunt', 'Backside Blunt',
-        'Frontside 50-50', 'Backside 50-50', 'Frontside Smith', 'Backside Smith',
-        'Frontside Feeble', 'Backside Feeble', 'Frontside Overcrook', 'Backside Overcrook',
-        'Fakie Axle', 'Fakie Nose', 'Fakie Tail', 'Fakie 50-50', 'Fakie 5-0',
-        'Fakie Smith', 'Fakie Feeble',
-        'Nollie Axle', 'Nollie Nose', 'Nollie Tail', 'Nollie 50-50', 'Nollie 5-0',
-        'Switch Axle', 'Switch Nose', 'Switch 50-50', 'Switch Smith',
-        'Disaster', 'Frontside Disaster', 'Backside Disaster',
-        'Fakie Disaster', 'Nollie Disaster', 'Switch Disaster'
-    ]
+const tricksByDifficulty = {
+    // ФЛЭТ - трюки на плоской поверхности
+    'Флэт': {
+        easy: [
+            'ollie', 'sw ollie', 'fakie ollie', 'nollie', 'ollie north',
+            'fs 180', 'sw fs 180', 'fakie fs 180', 'nollie fs 180',
+            'bs 180', 'sw bs 180', 'fakie bs 180', 'nollie bs 180',
+            'pop shove it', 'fakie pop shove it', 'nollie pop shove it', 'sw pop shove it',
+            'fs shove it', 'sw fs shove it', 'fakie fs shove it', 'nollie fs shove it',
+            'kickflip', 'fakie kickflip', 'heelflip', 'fakie heel flip',
+            'fakie varial flip', 'fakie 360 pop shove it', 'nollie 360 pop shove it'
+        ],
+        medium: [
+            'nollie kickflip', 'nollie heelflip', 'sw kickflip', 'sw heelflip',
+            'bs big spin', 'sw bs bigspin', 'fs big spin', 'fakie fs big spin', 'nollie fs bigspin',
+            'varial flip', 'sw varial flip', 'nollie varial flip',
+            'varial heel', 'fakie varial heel',
+            'fakie 360 shove it', 'nollie fs 360 shove it',
+            'fs flip', 'fakie fs flip', 'bs flip', 'fakie bs flip',
+            'fs heel', 'fakie fs heel', 'bs heel', 'fakie bs heel',
+            'hardflip', 'fakie hardflip', 'inward heel', 'fakie inward',
+            '360 flip', 'fakie 360 flip', 'fakie bigflip',
+            'fakie biggerspin', 'impossible', 'fakie impossible', 'fake bs 360'
+        ],
+        hard: [
+            'sw varial heel', 'nollie varial heel',
+            '360 pop shove it', 'sw 360 pop shove it', 'fs 360 shove it', 'sw fs 360 shove it',
+            'sw fs flip', 'nollie fs flip', 'sw bs flip', 'nollie bs flip',
+            'sw fs heel', 'nollie fs heel', 'sw bs heel', 'nollie bs heel',
+            'sw hardflip', 'nollie hardflip', 'sw inward', 'nollie inward',
+            'sw 360 flip', 'nollie 360 flip', 'big flip', 'sw bigflip', 'nollie bigflip',
+            'fakie biggerflip', 'sw impossible', 'nollie impossible',
+            'late fs shove it', 'late pop shove it',
+            'bs 360', 'nollie bs 360', 'sw bs 360', 'fs 360', 'fakie fs 360', 'nollie fs 360', 'sw fs 360',
+            'laser', 'fakie laser', 'sw laser', 'nollie laser'
+        ]
+    },
+    
+    // ГРОБИК (рейлы, грайнды)
+    'Гробик': {
+        easy: [
+            'fs 50-50', 'fakie fs 50-50', 'bs 50-50',
+            'fs 5-0', 'fs nosegrind',
+            'fs boardslide', 'fakie fs boardslide', 'bs boardslide', 'fakie bs boardslide',
+            'bs noseslide', 'bs crooked'
+        ],
+        medium: [
+            'fakie bs 50-50', 'fakie fs 5-0', 'nollie fs 5-0', 'bs 5-0', 'fakie bs 5-0',
+            'sw fs nosegrind', 'bs nosegrind', 'sw bs boardslide',
+            'fs noseslide', 'fakie fs noseslide', 'fakie bs noseslide', 'sw fs noseslide',
+            'fs smith', 'bs smith', 'fs feeble', 'bs feeble',
+            'fs tail', 'bs tail', 'fs lip', 'bs lip', 'fs crooked'
+        ],
+        hard: [
+            'sw fs 50-50', 'nollie fs 50-50', 'sw bs 50-50', 'nollie bs 50-50',
+            'sw fs 5-0', 'nollie fs 5-0', 'sw bs 5-0', 'nollie bs 5-0',
+            'fakie fs nosegrind', 'nollie fs nosegrind', 'fakie bs nosegrind',
+            'sw bs nosegrind', 'nollie bs nosegrind', 'sw fs boardslide', 'nollie fs boardslide',
+            'nollie bs boardslide', 'sw fs noseslide', 'nollie fs noseslide',
+            'fakie fs smith', 'sw fs smith', 'nollie fs smith', 'fakie bs smith',
+            'sw bs smith', 'nollie bs smith', 'nollie fs feeble', 'fakie fs feeble',
+            'sw fs feeble', 'fakie bs feeble', 'sw bs feeble', 'nollie bs feeble',
+            'fakie fs tail', 'sw fs tail', 'nollie fs tail', 'fakie bs tail',
+            'sw bs tail', 'nollie bs tail', 'fakie fs lip', 'sw fs lip',
+            'nollie fs lip', 'fakie bs lip', 'nollie bs lip', 'sw bs lip',
+            'fs blunt', 'bs blunt', 'fs noseblunt', 'bs noseblunt'
+        ]
+    },
+    
+    // РАДИУС (ramps, transitions)
+    'Радиус': {
+        easy: [
+            'Frontside Axle', 'Backside Axle', 'Frontside Nose', 'Backside Nose',
+            'Frontside Tail', 'Backside Tail', 'Frontside 50-50', 'Backside 50-50'
+        ],
+        medium: [
+            'Frontside Smith', 'Backside Smith', 'Frontside Feeble', 'Backside Feeble',
+            'Fakie Axle', 'Fakie Nose', 'Fakie Tail', 'Fakie 50-50', 'Fakie 5-0',
+            'Nollie Axle', 'Nollie Nose', 'Nollie Tail', 'Nollie 50-50', 'Nollie 5-0',
+            'Disaster', 'Frontside Disaster', 'Backside Disaster'
+        ],
+        hard: [
+            'Frontside Blunt', 'Backside Blunt', 'Frontside Overcrook', 'Backside Overcrook',
+            'Fakie Smith', 'Fakie Feeble', 'Fakie Disaster',
+            'Switch Axle', 'Switch Nose', 'Switch 50-50', 'Switch Smith',
+            'Switch Disaster', 'Nollie Disaster'
+        ]
+    }
 };
 
+// Добавляем маппинг для других фигур
 const figureToTrickMap = {
     'Флэт': 'Флэт',
     'Кикер': 'Флэт',
@@ -321,12 +341,34 @@ playerCountBtns.forEach(btn => {
     });
 });
 
+// ИЗМЕНЕНО: теперь мультивыбор для сложности
 const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+let selectedDifficulties = ['easy']; // по умолчанию только легкие
+
+// Устанавливаем active для легких по умолчанию
+difficultyBtns.forEach(btn => {
+    if (btn.dataset.difficulty === 'easy') {
+        btn.classList.add('active');
+    }
+});
+
 difficultyBtns.forEach(btn => {
     btn.addEventListener('click', function() {
-        difficultyBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        gameState.difficulty = this.dataset.difficulty;
+        this.classList.toggle('active');
+        
+        // Собираем выбранные сложности
+        selectedDifficulties = [];
+        document.querySelectorAll('.difficulty-btn.active').forEach(activeBtn => {
+            selectedDifficulties.push(activeBtn.dataset.difficulty);
+        });
+        
+        // Если ничего не выбрано - автоматически выбираем легкие
+        if (selectedDifficulties.length === 0) {
+            document.querySelector('[data-difficulty="easy"]').classList.add('active');
+            selectedDifficulties = ['easy'];
+        }
+        
+        gameState.difficulties = selectedDifficulties;
     });
 });
 
@@ -358,9 +400,11 @@ figureBtns.forEach(btn => {
 const roundBtns = document.querySelectorAll('.round-btn');
 let selectedRounds = 5;
 
-// Убираем active со всех кнопок раундов
+// Устанавливаем active для 5 раундов по умолчанию
 roundBtns.forEach(btn => {
-    btn.classList.remove('active');
+    if (btn.dataset.rounds === '5') {
+        btn.classList.add('active');
+    }
 });
 
 roundBtns.forEach(btn => {
@@ -409,10 +453,7 @@ document.getElementById('startGameBtn').addEventListener('click', function() {
         return;
     }
     
-    const difficultyBtn = document.querySelector('.difficulty-btn.active');
-    const difficulty = difficultyBtn ? difficultyBtn.dataset.difficulty : 'easy';
-    
-    gameState.difficulty = difficulty;
+    gameState.difficulties = selectedDifficulties;
     gameState.maxRounds = selectedRounds;
     gameState.selectedRounds = selectedRounds;
     
@@ -428,38 +469,128 @@ document.getElementById('startGameBtn').addEventListener('click', function() {
 // Вызываем при загрузке
 updateStartButtonState();
 
-// ===== ЭКРАН 2: ВВОД ИМЁН =====
-function generatePlayerInputs(count) {
-    const list = document.getElementById('playersInputList');
-    if (!list) return;
-    list.innerHTML = '';
-    for (let i = 1; i <= count; i++) {
-        const group = document.createElement('div');
-        group.className = 'player-input-group';
-        const label = document.createElement('span');
-        label.className = 'player-input-label';
-        label.textContent = `Скейтер ${i}`;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.className = 'player-input-field';
-        input.placeholder = `Имя скейтера ${i}`;
-        input.id = `playerName${i}`;
-        group.appendChild(label);
-        group.appendChild(input);
-        list.appendChild(group);
+// ===== ЭКРАН 2: ПОШАГОВЫЙ ВВОД ИМЁН =====
+let currentPlayerStep = 0;
+let playerNames = [];
+let totalPlayers = 1;
+
+// Функция инициализации пошагового ввода
+function initStepInput(count) {
+    totalPlayers = count;
+    currentPlayerStep = 0;
+    playerNames = new Array(count).fill('');
+    
+    // Обновляем заголовок
+    const title = document.getElementById('playerInputTitle');
+    if (title) {
+        title.textContent = `Скейтер ${currentPlayerStep + 1}`;
+    }
+    
+    // Обновляем номер игрока
+    const playerNumber = document.getElementById('playerNumber');
+    if (playerNumber) {
+        playerNumber.textContent = `${currentPlayerStep + 1} из ${totalPlayers}`;
+    }
+    
+    // Очищаем поле ввода и ставим фокус
+    const input = document.getElementById('currentPlayerInput');
+    if (input) {
+        input.value = '';
+        setTimeout(() => input.focus(), 100);
+    }
+    
+    // Обновляем индикатор шагов
+    updateStepIndicator();
+    
+    // Меняем текст кнопки
+    const btn = document.getElementById('nextPlayerBtn');
+    if (btn) {
+        btn.textContent = totalPlayers === 1 ? 'Готово' : 'Далее';
     }
 }
 
-document.getElementById('readyBtn').addEventListener('click', function() {
-    const players = [];
-    for (let i = 1; i <= selectedPlayerCount; i++) {
-        const input = document.getElementById(`playerName${i}`);
-        const name = input ? input.value.trim() : '';
-        players.push(name || `Скейтер ${i}`);
+// Функция обновления индикатора шагов
+function updateStepIndicator() {
+    const indicator = document.getElementById('stepIndicator');
+    if (!indicator) return;
+    
+    const steps = indicator.querySelectorAll('.step');
+    steps.forEach((step, index) => {
+        if (index < totalPlayers) {
+            step.style.display = 'flex';
+            
+            // Обновляем классы
+            step.classList.remove('active', 'completed');
+            step.textContent = index + 1;
+            
+            if (index === currentPlayerStep) {
+                step.classList.add('active');
+            } else if (index < currentPlayerStep) {
+                step.classList.add('completed');
+                step.textContent = ''; // Убираем цифру, оставляем галочку из CSS
+            }
+        } else {
+            step.style.display = 'none';
+        }
+    });
+}
+
+// Обработчик кнопки "Далее"/"Готово"
+document.getElementById('nextPlayerBtn')?.addEventListener('click', function() {
+    const input = document.getElementById('currentPlayerInput');
+    const name = input.value.trim();
+    
+    // Сохраняем имя (если пустое - используем "Скейтер N")
+    playerNames[currentPlayerStep] = name || `Скейтер ${currentPlayerStep + 1}`;
+    
+    // Если это последний игрок
+    if (currentPlayerStep === totalPlayers - 1) {
+        // Завершаем ввод
+        gameState.players = playerNames;
+        startGameWithPlayers();
+    } else {
+        // Переходим к следующему игроку
+        currentPlayerStep++;
+        
+        // Обновляем заголовок
+        const title = document.getElementById('playerInputTitle');
+        if (title) {
+            title.textContent = `Скейтер ${currentPlayerStep + 1}`;
+        }
+        
+        // Обновляем номер игрока
+        const playerNumber = document.getElementById('playerNumber');
+        if (playerNumber) {
+            playerNumber.textContent = `${currentPlayerStep + 1} из ${totalPlayers}`;
+        }
+        
+        // Очищаем поле и фокус
+        input.value = '';
+        input.focus();
+        
+        // Обновляем индикатор
+        updateStepIndicator();
+        
+        // Если это предпоследний игрок, меняем текст кнопки
+        const btn = document.getElementById('nextPlayerBtn');
+        if (btn && currentPlayerStep === totalPlayers - 1) {
+            btn.textContent = 'Готово';
+        }
     }
-    gameState.players = players;
-    startGameWithPlayers();
 });
+
+// Обработка нажатия Enter в поле ввода
+document.getElementById('currentPlayerInput')?.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('nextPlayerBtn').click();
+    }
+});
+
+// Обновляем функцию generatePlayerInputs
+function generatePlayerInputs(count) {
+    initStepInput(count);
+}
 
 // ===== ЭКРАН 3: ЗАПУСК ИГРЫ =====
 function startGameWithPlayers() {
@@ -467,15 +598,34 @@ function startGameWithPlayers() {
     gameState.currentRound = 1;
     gameWinner = null;
     
-    // Скрываем кнопки действий
+    // Скрываем кнопки действий (они по умолчанию hidden)
     const doneBtn = document.getElementById('doneBtn_s3');
     const failBtn = document.getElementById('failBtn_s3');
     const redoBtn = document.getElementById('redoBtn_s3');
-    if (doneBtn) doneBtn.style.display = 'none';
-    if (failBtn) failBtn.style.display = 'none';
-    if (redoBtn) redoBtn.style.display = 'none';
+    if (doneBtn) {
+        doneBtn.classList.add('hidden');
+        doneBtn.style.display = ''; // сбрасываем inline-стили
+    }
+    if (failBtn) {
+        failBtn.classList.add('hidden');
+        failBtn.style.display = '';
+    }
+    if (redoBtn) {
+        redoBtn.classList.add('hidden');
+        redoBtn.style.display = '';
+    }
     
-    // Возвращаем кнопке "Загадать" исходный текст и обработчик
+    // Скрываем колесо
+    if (wheelContainer1_s3) {
+        wheelContainer1_s3.classList.add('hidden');
+    }
+    
+    // Скрываем результаты
+    if (resultContainer1_s3) resultContainer1_s3.classList.add('hidden');
+    if (resultContainer2_s3) resultContainer2_s3.classList.add('hidden');
+    if (restartSection_s3) restartSection_s3.classList.add('hidden');
+    
+    // Показываем кнопку "Загадать"
     if (spinBtn1_s3) {
         spinBtn1_s3.textContent = 'Загадать';
         spinBtn1_s3.style.display = 'block';
@@ -504,14 +654,27 @@ function startGameWithPlayers() {
     updateGameDisplay();
     showScreen(3);
 }
-
+// ИЗМЕНЕНО: функция отображения сложности
 function updateGameDisplay() {
     const levelBadges = document.querySelectorAll('.level-badge');
     if (levelBadges.length > 0) {
-        const difficultyText = gameState.difficulty === 'easy' ? 'Легко' : 
-                              gameState.difficulty === 'medium' ? 'Средне' : 'Сложно';
+        // Преобразуем массив сложностей в читаемый текст
+        const difficultyMap = {
+            'easy': 'Легкие',
+            'medium': 'Средние',
+            'hard': 'Сложные'
+        };
+        
+        let difficultyText = '';
+        if (gameState.difficulties.length === 3) {
+            difficultyText = 'Сложность: Все уровни';
+        } else {
+            const difficultyNames = gameState.difficulties.map(d => difficultyMap[d]).join(', ');
+            difficultyText = `Сложность: ${difficultyNames}`;
+        }
+        
         levelBadges.forEach(badge => {
-            badge.textContent = `Сложность: ${difficultyText}`;
+            badge.textContent = difficultyText;
         });
     }
     updateRoundDisplay();
@@ -543,32 +706,31 @@ function updateFailsDisplay() {
     if (!failsContainer) return;
     failsContainer.innerHTML = '';
     
+    const playerCount = gameState.players.length;
+    
+    // Устанавливаем атрибут для CSS
+    failsContainer.setAttribute('data-players', playerCount);
+    
     gameState.players.forEach((player, index) => {
         const failCount = playerFails[index] || 0;
         const isEliminated = failCount >= gameState.maxRounds;
+        
         const failItem = document.createElement('div');
         failItem.className = `fail-item ${isEliminated ? 'eliminated' : ''}`;
-        const nameSpan = document.createElement('span');
-        nameSpan.className = 'fail-player-name';
-        nameSpan.textContent = player;
-        const countSpan = document.createElement('span');
-        countSpan.className = 'fail-count';
-        countSpan.textContent = `${failCount}/${gameState.maxRounds}`;
         
-        if (isEliminated) {
-            const eliminatedSpan = document.createElement('span');
-            eliminatedSpan.className = 'eliminated-badge';
-            
-            failItem.appendChild(nameSpan);
-            
-            failItem.appendChild(eliminatedSpan);
-        } else {
-            failItem.appendChild(nameSpan);
-            failItem.appendChild(countSpan);
-        }
+        // Первая буква имени (заглавная)
+        const initial = player.charAt(0).toUpperCase();
+        
+        failItem.innerHTML = `
+            <span class="fail-initial">${initial}</span>
+            <span class="fail-count">${failCount}/${gameState.maxRounds}</span>
+            <span class="fail-fullname">${player}</span>
+        `;
+        
         failsContainer.appendChild(failItem);
     });
 }
+
 
 function isPlayerEliminated(playerIndex) {
     return playerFails[playerIndex] >= gameState.maxRounds;
@@ -617,6 +779,7 @@ function showWinnerMode() {
         spinBtn1_s3.addEventListener('click', resetGame);
     }
     
+    // Скрываем все лишнее
     if (wheelContainer1_s3) wheelContainer1_s3.classList.add('hidden');
     if (resultContainer1_s3) resultContainer1_s3.classList.add('hidden');
     if (resultContainer2_s3) resultContainer2_s3.classList.add('hidden');
@@ -624,20 +787,24 @@ function showWinnerMode() {
     
     const doneBtn = document.getElementById('doneBtn_s3');
     const failBtn = document.getElementById('failBtn_s3');
-    const redoBtn = document.getElementById('redoBtn_s3');
-    if (doneBtn) doneBtn.style.display = 'none';
-    if (failBtn) failBtn.style.display = 'none';
-    if (redoBtn) redoBtn.style.display = 'none';
+    if (doneBtn) {
+        doneBtn.classList.add('hidden');
+        doneBtn.style.display = '';
+    }
+    if (failBtn) {
+        failBtn.classList.add('hidden');
+        failBtn.style.display = '';
+    }
     
     const winnerMessage = document.getElementById('winnerMessage');
     if (winnerMessage) {
-        // Определяем сообщение в зависимости от результата
         let messageText = '';
         if (gameWinner && gameWinner.includes('проиграл')) {
+            const name = gameWinner.replace(' (проиграл)', '');
             messageText = `
                 <div class="winner-display lose">
                     <span class="winner-trophy">😢</span>
-                    <span class="winner-name">${gameWinner.replace(' (проиграл)', '')}</span>
+                    <span class="winner-name">${name}</span>
                     <span class="winner-label">ПРОИГРАЛ</span>
                 </div>
             `;
@@ -656,6 +823,7 @@ function showWinnerMode() {
 }
 
 // ===== ЭКРАН 3: КОЛЕСО - ФУНКЦИИ =====
+// ИЗМЕНЕНО: теперь собирает трюки из всех выбранных уровней сложности
 function spinWheel1_s3() {
     if (gameWinner) {
         resetGame();
@@ -685,7 +853,10 @@ function spinWheel1_s3() {
     spinBtn1_s3.disabled = true;
     spinBtn1_s3.style.display = 'none';
     
+    // ПОКАЗЫВАЕМ КОЛЕСО
     wheelContainer1_s3.classList.remove('hidden');
+    
+    // Скрываем результаты (если были показаны ранее)
     if (resultContainer1_s3) resultContainer1_s3.classList.add('hidden');
     if (resultContainer2_s3) resultContainer2_s3.classList.add('hidden');
     if (restartSection_s3) restartSection_s3.classList.add('hidden');
@@ -706,14 +877,32 @@ function spinWheel1_s3() {
         wheel1_s3.style.transform = `rotate(${stopAngle}deg)`;
         
         setTimeout(() => {
+            // Выбираем случайную фигуру из выбранных
             const randomFigureIndex = Math.floor(Math.random() * gameState.selectedFigures.length);
             currentFigure_s3 = gameState.selectedFigures[randomFigureIndex];
+            
+            // Получаем ключ для поиска трюков
             const trickListKey = figureToTrickMap[currentFigure_s3] || currentFigure_s3;
             
-            if (tricksByFigure[trickListKey]) {
-                const tricks = tricksByFigure[trickListKey];
-                const randomTrickIndex = Math.floor(Math.random() * tricks.length);
-                currentTrick_s3 = tricks[randomTrickIndex];
+            // Собираем трюки из всех выбранных уровней сложности
+            let availableTricks = [];
+            
+            if (tricksByDifficulty[trickListKey]) {
+                gameState.difficulties.forEach(difficulty => {
+                    if (tricksByDifficulty[trickListKey][difficulty]) {
+                        availableTricks = [
+                            ...availableTricks, 
+                            ...tricksByDifficulty[trickListKey][difficulty]
+                        ];
+                    }
+                });
+            }
+            
+            availableTricks = [...new Set(availableTricks)];
+            
+            if (availableTricks.length > 0) {
+                const randomTrickIndex = Math.floor(Math.random() * availableTricks.length);
+                currentTrick_s3 = availableTricks[randomTrickIndex];
             } else {
                 currentTrick_s3 = 'Нет трюков';
             }
@@ -728,20 +917,27 @@ function spinWheel1_s3() {
             result2_s3.classList.add('active');
             resultContainer2_s3.classList.remove('hidden');
             
+            // Скрываем колесо после показа результатов
             wheelContainer1_s3.classList.add('hidden');
             spinBtn1_s3.disabled = false;
             restartSection_s3.classList.remove('hidden');
             
+            // ПОКАЗЫВАЕМ КНОПКИ ДЕЙСТВИЙ
             const doneBtn = document.getElementById('doneBtn_s3');
             const failBtn = document.getElementById('failBtn_s3');
-            const redoBtn = document.getElementById('redoBtn_s3');
-            if (doneBtn) doneBtn.style.display = 'inline-block';
-            if (failBtn) failBtn.style.display = 'inline-block';
-            if (redoBtn) redoBtn.style.display = 'inline-block';
+            if (doneBtn) {
+                doneBtn.classList.remove('hidden');
+                doneBtn.style.display = 'inline-block';
+            }
+            if (failBtn) {
+                failBtn.classList.remove('hidden');
+                failBtn.style.display = 'inline-block';
+            }
             
         }, 3000);
     }, 50);
 }
+
 
 function restartGame_s3() {
     wheel1_s3.style.transition = 'none';
@@ -761,23 +957,27 @@ function restartGame_s3() {
     currentFigure_s3 = null;
     currentTrick_s3 = null;
     
-    wheelContainer1_s3.classList.remove('hidden');
+    // Колесо остается скрытым
+    wheelContainer1_s3.classList.add('hidden');
+    
+    // Показываем кнопку "Загадать"
     spinBtn1_s3.style.display = 'block';
     spinBtn1_s3.disabled = false;
     
     if (restartSection_s3) restartSection_s3.classList.add('hidden');
     
+    // Скрываем кнопки действий
     const doneBtn = document.getElementById('doneBtn_s3');
     const failBtn = document.getElementById('failBtn_s3');
-    const redoBtn = document.getElementById('redoBtn_s3');
-    if (doneBtn) doneBtn.style.display = 'none';
-    if (failBtn) failBtn.style.display = 'none';
-    if (redoBtn) redoBtn.style.display = 'none';
+    if (doneBtn) {
+        doneBtn.classList.add('hidden');
+        doneBtn.style.display = '';
+    }
+    if (failBtn) {
+        failBtn.classList.add('hidden');
+        failBtn.style.display = '';
+    }
 }
-
-if (spinBtn1_s3) spinBtn1_s3.addEventListener('click', spinWheel1_s3);
-if (restartBtn_s3) restartBtn_s3.addEventListener('click', restartGame_s3);
-
 // ===== ФУНКЦИИ ПЕРЕХОДА =====
 function nextPlayer() {
     if (gameState.players.length === 1) {
@@ -974,15 +1174,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    if (restartSection_s3) restartSection_s3.classList.add('hidden');
+    // Начальное состояние третьего экрана
+    if (wheelContainer1_s3) wheelContainer1_s3.classList.add('hidden');
     if (resultContainer1_s3) resultContainer1_s3.classList.add('hidden');
     if (resultContainer2_s3) resultContainer2_s3.classList.add('hidden');
+    if (restartSection_s3) restartSection_s3.classList.add('hidden');
     
     const doneBtn = document.getElementById('doneBtn_s3');
     const failBtn = document.getElementById('failBtn_s3');
-    const redoBtn = document.getElementById('redoBtn_s3');
-    if (doneBtn) doneBtn.style.display = 'none';
-    if (failBtn) failBtn.style.display = 'none';
-    if (redoBtn) redoBtn.style.display = 'none';
+    if (doneBtn) {
+        doneBtn.classList.add('hidden');
+        doneBtn.style.display = '';
+    }
+    if (failBtn) {
+        failBtn.classList.add('hidden');
+        failBtn.style.display = '';
+    }
 });
 
