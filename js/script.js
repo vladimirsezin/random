@@ -872,7 +872,7 @@ function spinWheel1_s3() {
     
     setTimeout(() => {
         wheel1_s3.style.transition = 'transform 6s cubic-bezier(0.2, 0.8, 0.3, 1)';
-        const spins = 5 + Math.floor(Math.random() * 3);
+        const spins = 5 + Math.floor(Math.random() * 4);
         const stopAngle = spins * 360 + Math.floor(Math.random() * 360);
         wheel1_s3.style.transform = `rotate(${stopAngle}deg)`;
         
@@ -934,7 +934,7 @@ function spinWheel1_s3() {
                 failBtn.style.display = 'inline-block';
             }
             
-        }, 3000);
+        }, 6000);
     }, 50);
 }
 
