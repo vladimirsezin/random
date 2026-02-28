@@ -871,7 +871,7 @@ function spinWheel1_s3() {
     wheel1_s3.style.transform = 'rotate(0deg)';
     
     setTimeout(() => {
-        wheel1_s3.style.transition = 'transform 3s cubic-bezier(0.2, 0.8, 0.3, 1)';
+        wheel1_s3.style.transition = 'transform 6s cubic-bezier(0.2, 0.8, 0.3, 1)';
         const spins = 5 + Math.floor(Math.random() * 3);
         const stopAngle = spins * 360 + Math.floor(Math.random() * 360);
         wheel1_s3.style.transform = `rotate(${stopAngle}deg)`;
